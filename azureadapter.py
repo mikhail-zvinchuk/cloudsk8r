@@ -1,6 +1,7 @@
 import os
 
 from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import ContainerClient
 
 
 class AzureAdapter:
@@ -20,3 +21,11 @@ class AzureAdapter:
         container_list = client.list_containers()
         for container in container_list:
             print(container.name)
+            container_client = client.get_container_client(container.name)
+            AzureAdapter.list_blobs_in_container(container_client)
+
+    @staticmethod
+    def list_blobs_in_container(client):
+        blob_list = client.list_blobs()
+        for blob in blob_list:
+            print(blob.name + '\n')
